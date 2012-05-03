@@ -10,6 +10,7 @@ phone.setup(function(){
 		console.log(reqParams)
 		console.log(res)
 		res.send('test')
+		res.end()
 	})
 })
 
