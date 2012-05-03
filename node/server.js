@@ -18,6 +18,10 @@ app.set('view engine', 'jade');
 
 // Handle: domain root request
 app.get('/', function(req, res){
+
+  // User should be redirected to log in if not logged in
+  if ( login_required( req, res ) ) { return; } 
+
   console.log( "Handling request to /" );
   handle_root_req( req, res );
 });
@@ -26,6 +30,17 @@ app.get('/login', function(req, res){
   console.log( "Handling request to log in page" );
   res.render('login', {
     title: 'Log in or Sign up'
+  });
+});
+
+app.get('/add-event', function(req, res){
+
+  // User should be redirected to log in if not logged in
+  if ( login_required( req, res ) ) { return; } 
+
+  console.log( "Handling request to add event" );
+  res.render('add-event', {
+    title: 'Add Event'
   });
 });
 
@@ -48,6 +63,17 @@ app.post('/process/login', function(req, res){
   handle_signin( req, res, req.body.email, req.body.password );
 });
 
+// Handle: create event request
+app.post('/process/add-event', function(req, res){
+
+  // User should be redirected to log in if not logged in
+  if ( login_required( req, res ) ) { return; } 
+
+  var when = req.body.date + ' ' + req.body.hour + ':' + req.body.minutes + ':00';
+  console.log( "Handling creation of event at " + when );
+  add_event( res, req.session.email, when, req.body.title, req.body.description )
+});
+
 // Handle: static file requests
 app.get('*', function(req, res){
   var file_path = get_requested_file_path( req );
@@ -64,6 +90,21 @@ app.get('*', function(req, res){
 });
 
 app.listen(8888);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function login_required( req, res ) {
+  var auth_email = req.session.email;
+  var auth_pass  = req.session.password;
+
+  var must_login = typeof auth_email === 'undefined' || typeof auth_pass === 'undefined';
+
+  if ( must_login ) {
+    console.log( "No session information for user; redirecting to login page" );
+    res.redirect('/login');
+  }
+
+  return must_login;
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function get_messages( email, response ) {
@@ -83,10 +124,9 @@ function get_messages( email, response ) {
 
             console.log( "Found " + rows.length + " messages for user `" + email + "`." );
 
-            //handle_static_file( 'public/index.html', response );
-
             response.render('index', {
-              title: 'Home'
+              title: 'Home',
+              events: rows
             });
             
         });
@@ -117,7 +157,7 @@ function add_user( req, res, email, password, phone ) {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-function add_message( email, when, title, description ) {
+function add_event( res, email, when, title, description ) {
   console.log( "Try to add message `" + title + "`: " + description );
   get_db().on('error', function(error) {
     console.log('Database error: ' + error);
@@ -133,6 +173,7 @@ function add_message( email, when, title, description ) {
               return;
             }
             console.log("Created message `" + title + "`: " + description );
+            res.redirect('/');
         });
   }).connect();
 }
@@ -142,12 +183,6 @@ function handle_root_req( req, res ) {
 
   var auth_email = req.session.email;
   var auth_pass  = req.session.password;
-
-  if ( typeof auth_email === 'undefined' || typeof auth_pass === 'undefined' ) {
-    console.log( "No session information for user; redirecting to login page" );
-    res.redirect('/login');
-    return;
-  }
 
   console.log( "Attempting to authenticate session for user: " + auth_email );
 
@@ -272,15 +307,4 @@ function get_db() {
 function endsWith(str, suffix) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-/*
-  user_exists( 'foo@bar.com', 'hella' );
-
-  new cronJob('* * * * * *', function(){
-    console.log('You will see this message every second');
-  }, null, true, "America/Los_Angeles");
-
-  get_messages( 'foo@bar.com' );
-*/
 

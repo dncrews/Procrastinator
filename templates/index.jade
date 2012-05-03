@@ -1,14 +1,15 @@
 h1= title
 
 .addNew
-  a.btn Add New Event
+  a.btn(href="/add-event") Add New Event
 
 .currentEvents
-  .event
-    h2 ##title##
-    p.event_descr ##descr##
-    p.event_date  ##mm/dd/yyyy##
-    p.event_time  ##12:00 pm##
-    a.event_edit(href="#edit) Edit Event
-    a.event_delete(href="#delete")  Delete Event
+  - each event in events
+    .event
+      h2= event.title
+      p.event_descr= event.description
+      p.event_date=  event.when
+      //- p.event_time  ##12:00 pm##
+      a.event_edit(href="#edit) Edit Event
+      a.event_delete(href="delete-event")  Delete Event
 

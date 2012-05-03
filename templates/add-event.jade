@@ -1,0 +1,46 @@
+h1= title
+form(action="/process/add-event", method="post", id="createEvent")
+
+  label.event_title Event name
+  input(name="title", placeholder="Brush my teeth")
+
+  label.event_descr Description
+  textarea(rows="6", cols="65", name="description")
+
+  label.event_date  Date
+  input(name="date", id="datepicker", placeholder="2012-05-03")
+
+  label.event_time(for="hour")  Time
+  select.event_hour(name="hour", id="hour")
+    option(value="01") 1am
+    option(value="02") 2am
+    option(value="03") 3am
+    option(value="04") 4am
+    option(value="05") 5am
+    option(value="06") 6am
+    option(value="07") 7am
+    option(value="08") 8am
+    option(value="09") 9am
+    option(value="10") 10am
+    option(value="11") 11am
+    option(value="12") noon
+    option(value="13") 1pm
+    option(value="14") 2pm
+    option(value="15") 3pm
+    option(value="16") 4pm
+    option(value="17") 5pm
+    option(value="18") 6pm
+    option(value="19") 7pm
+    option(value="20") 8pm
+    option(value="21") 9pm
+    option(value="22") 10pm
+    option(value="23") 11pm
+    option(value="24") midnight
+
+  select.event_min(name="minutes")
+    option(value="00")  00
+    option(value="15")  15
+    option(value="30")  30
+    option(value="45")  45
+
+  input(type="submit", class="btn", value="Create Event")

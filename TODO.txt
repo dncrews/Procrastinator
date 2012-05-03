@@ -1,10 +1,18 @@
 Besides implementing the basic functionality, this is a wish list of development items:
 
+[ ] Implement cron
+    [ ] Check for event for all users, and send email or SMS on event
+    [ ] Style past events so user knows they are passed
+
+    |  new cronJob('* * * * * *', function(){
+    |    console.log('You will see this message every second');
+    |  }, null, true, "America/Los_Angeles");
+
 [ ] Make database user & database name configurable. Right now, hardcoded in scripts/init.sql (with a slightly offensive password)
 
 [ ] Error handling (e.g., if login fails; if database connection fails; I/O errors; etc.)
 
-[ ] Let's deploy on Heroku (after fix potential security issues)
+[ ] Deploy on Heroku (after fix potential security issues)
 
 [ ] Password in `users` table currently stored in clear text; very least, use a very salty hash
 
@@ -14,7 +22,7 @@ Besides implementing the basic functionality, this is a wish list of development
 
 [ ] Pick a name ("Procrastinator"? "Procrastinate"? "Remind.Me"? ) and use consistently in site
 
-[ ] Move all files to Jade, and use a single layout file to DRY
+[ ] Change table name `messages` to `events`
 
 
 Feel good, these things are finished:
@@ -27,4 +35,6 @@ Feel good, these things are finished:
 
 [x] Use templating, perhaps Underscore.js, to render dynamic page content (e.g., list of events)
     (Nope, using Jade)
+
+[x] Move all files to Jade, and use a single layout file to DRY
 
