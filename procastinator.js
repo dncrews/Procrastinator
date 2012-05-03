@@ -1,21 +1,23 @@
 var twilioClient = require('twilio').Client,
 	client = new twilioClient('ACa09b866711055b9ddad8c1d5adc2c1c7','a4292a6c67e9be8367598054344523ba','http://fierce-snow-2861.herokuapp.com/'),
-	phone = client.getPhoneNumber('+18017018979'),
+	port = process.env.PORT || 8080
+	phone = client.getPhoneNumber('+18017018979', {
+		"port" : port
+	}),
 	express = require('express'),
 	app = express.createServer()
 
 phone.setup(function(){
-	// phone.on('incomingSms', function(reqParams, res) {
-	// 	console.log(reqParams)
-	// 	console.log(res)
-	// })
+	phone.on('incomingSms', function(reqParams, res) {
+		console.log(reqParams)
+		console.log(res)
+	})
 })
 
-app.get('/', function(req,res) {
-	res.send('test')
-})
+// app.get('/', function(req,res) {
+// 	res.send('test')
+// })
 
-var port = process.env.PORT || 3000
 
-app.listen(port)
+// app.listen(port)
 
