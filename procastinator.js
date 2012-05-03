@@ -1,9 +1,7 @@
 var twilioClient = require('twilio').Client,
-	client = new twilioClient('ACa09b866711055b9ddad8c1d5adc2c1c7','a4292a6c67e9be8367598054344523ba','http://fierce-snow-2861.herokuapp.com/'),
 	port = process.env.PORT || 8080
-	phone = client.getPhoneNumber('+18017018979', {
-		"port" : port
-	}),
+	client = new twilioClient('ACa09b866711055b9ddad8c1d5adc2c1c7','a4292a6c67e9be8367598054344523ba','http://fierce-snow-2861.herokuapp.com/', {"port" : port}),
+	phone = client.getPhoneNumber('+18017018979'),
 	express = require('express'),
 	app = express.createServer()
 
