@@ -11,24 +11,25 @@ var express     = require('express');
 var app = express.createServer();
 
 app.use(express.bodyParser());
+app.use(express.cookieParser());
+app.use(express.session({ secret: "procrastifoo" }));
 
 // Handle: domain root request
 app.get('/', function(req, res){
   console.log( "Handling request to /" );
-  get_messages( 'foo@bar.com', res );
+  handle_root_req( req, res );
 });
 
 // Handle: Sign-up request
 app.post('/signup', function(req, res){
   console.log( "Handling request to /signup" );
-  add_user( req.body.email, req.body.password, req.body.phone );
-  handle_static_file( 'public/user_created.html', res );
+  add_user( req, res, req.body.email, req.body.password, req.body.phone );
 });
 
 // Handle: Sign-in request
 app.post('/signin', function(req, res){
   console.log( "Handling request to /signin" );
-  user_exists( req.body.email, req.body.password );
+  handle_signin( req, res, req.body.email, req.body.password );
 });
 
 // Handle: static file requests
@@ -66,18 +67,14 @@ function get_messages( email, response ) {
 
             console.log( "Found " + rows.length + " messages for user `" + email + "`." );
 
-            var content_type = 'text/html';
-
-            response.writeHead(200, { 'Content-Type': content_type });
-            response.end(_index_html(), 'utf-8');
-                
+            handle_static_file( 'public/index.html', response );
         });
   }).connect();
 
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-function add_user( email, password, phone ) {
+function add_user( req, res, email, password, phone ) {
   console.log( "Try to add user `" + email + "`" );
   get_db().on('error', function(error) {
     console.log('Database error: ' + error);
@@ -93,6 +90,7 @@ function add_user( email, password, phone ) {
               return;
             }
             console.log('Created user `' + email + '`');
+            set_user_session( req, res, email, password );
         });
   }).connect();
 }
@@ -119,7 +117,45 @@ function add_message( email, when, title, description ) {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-function user_exists( email, password ) {
+function handle_root_req( req, res ) {
+
+  var auth_email = req.session.email;
+  var auth_pass  = req.session.password;
+
+  if ( typeof auth_email === 'undefined' || typeof auth_pass === 'undefined' ) {
+    console.log( "No session information for user; redirecting to login page" );
+    res.redirect('/login.html');
+    return;
+  }
+
+  console.log( "Attempting to authenticate session for user: " + auth_email );
+
+  get_db().on('error', function(error) {
+    console.log('Database error: ' + error);
+  }).on('ready', function(server) {
+        this.query().
+        select('*').
+        from('users').
+        where('email = ? AND password = ?', [ auth_email, auth_pass ]).
+        execute(function(error, rows, cols) {
+                if (error) {
+                        console.log('ERROR: ' + error);
+                        return;
+                }
+
+          if ( rows.length > 0 ) {
+            get_messages( req.session.email, res );
+          } else {
+            res.redirect('/login.html');
+          }
+                
+        });
+  }).connect();
+
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function handle_signin( req, res, email, password ) {
 
   get_db().on('error', function(error) {
     console.log('Database error: ' + error);
@@ -136,13 +172,23 @@ function user_exists( email, password ) {
 
           if ( rows.length > 0 ) {
             console.log( "User `" + email + "` exists." );
+            set_user_session( req, res, email, password );
           } else {
             console.log( "User `" + email + "` does NOT exist." );
+            handle_static_file( 'public/error.html', res );
           }
                 
         });
   }).connect();
 
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+function set_user_session( req, res, email, password ) {
+  req.session.email    = email;
+  req.session.password = password;
+  console.log( "Set session information for user: " + email );
+  res.redirect('/');
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

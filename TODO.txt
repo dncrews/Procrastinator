@@ -4,7 +4,7 @@ Besides implementing the basic functionality, this is a wish list of development
 
 [x] Clean up routes, perhaps using Express (Sinatra-like routing)
 
-[ ] When hit /, check if authenticated. If not, go to login page; else, show home page
+[x] When hit /, check if authenticated. If not, go to login page; else, show home page
 
 [ ] Use templating, perhaps Underscore.js, to render dynamic page content (e.g., list of events)
 
@@ -18,4 +18,4 @@ Besides implementing the basic functionality, this is a wish list of development
 
 [ ] Clean up basic server logic to be more idiomatically Express-like. See: http://expressjs.com/guide.html
 
-
+[ ] Use less generic error pages for failed authentication
