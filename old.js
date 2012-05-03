@@ -13,10 +13,10 @@ var post_data = querystring.stringify({
 });
 
 var options = {
-	host: tBaseUrl,
-	port: '443',
-	path: sendUrl,
-	method: 'POST'
+	'host': tBaseUrl,
+	'port': '443',
+	'path': sendUrl,
+	'method': 'POST'
 }
 
 console.log(options)
