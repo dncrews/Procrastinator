@@ -1,0 +1,4 @@
+* Change any GET submissions from forms to POST (e.g., when creating user account)
+* Clean up routes, perhaps using Express (Sinatra-like routing)
+* When hit /, check if authenticated. If not, go to login page; else, show home page
+* Use templating, perhaps Underscore.js, to render dynamic page content (e.g., list of events)
