@@ -29,6 +29,13 @@ app.get('/login', function(req, res){
   });
 });
 
+app.get('/error', function(req, res){
+  console.log( "Handling error" );
+  res.render('error', {
+    title: 'Error'
+  });
+});
+
 // Handle: Sign-up request
 app.post('/process/signup', function(req, res){
   console.log( "Handling sign up" );
@@ -189,7 +196,7 @@ function handle_signin( req, res, email, password ) {
             set_user_session( req, res, email, password );
           } else {
             console.log( "User `" + email + "` does NOT exist." );
-            handle_static_file( 'public/error.html', res );
+            res.redirect('/error');
           }
                 
         });
