@@ -1,4 +1,21 @@
-* Change any GET submissions from forms to POST (e.g., when creating user account)
-* Clean up routes, perhaps using Express (Sinatra-like routing)
-* When hit /, check if authenticated. If not, go to login page; else, show home page
-* Use templating, perhaps Underscore.js, to render dynamic page content (e.g., list of events)
+Besides implementing the basic functionality, this is a wish list of development items:
+
+[x] Change any GET submissions from forms to POST (e.g., when creating user account)
+
+[x] Clean up routes, perhaps using Express (Sinatra-like routing)
+
+[ ] When hit /, check if authenticated. If not, go to login page; else, show home page
+
+[ ] Use templating, perhaps Underscore.js, to render dynamic page content (e.g., list of events)
+
+[ ] Make database user & database name configurable. Right now, hardcoded in scripts/init.sql (with a slightly offensive password)
+
+[ ] Error handling (e.g., if login fails; if database connection fails; I/O errors; etc.)
+
+[ ] Let's deploy on Heroku (after fix potential security issues)
+
+[ ] Password in `users` table currently stored in clear text; very least, use a very salty hash
+
+[ ] Clean up basic server logic to be more idiomatically Express-like. See: http://expressjs.com/guide.html
+
+

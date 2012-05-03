@@ -1,47 +1,55 @@
-var http    = require('http');
-var fs      = require('fs');
-var path    = require('path');
-var mysql   = require('db-mysql');
-var cronJob = require('cron').CronJob;
+var http        = require('http');
+var fs          = require('fs');
+var path        = require('path');
+var mysql       = require('db-mysql');
+var cronJob     = require('cron').CronJob;
 var querystring = require("querystring");
-var sys     = require ('util');
-var url     = require('url');
-var http    = require('http');
+var url         = require('url');
+var express     = require('express');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-http.createServer(function (request, response) {
- 
-  var file_path = get_requested_file_path( request );
+var app = express.createServer();
 
-  console.log("\n\n" + 'Received request for ' + file_path);
+app.use(express.bodyParser());
 
+// Handle: domain root request
+app.get('/', function(req, res){
+  console.log( "Handling request to /" );
+  get_messages( 'foo@bar.com', res );
+});
+
+// Handle: Sign-up request
+app.post('/signup', function(req, res){
+  console.log( "Handling request to /signup" );
+  add_user( req.body.email, req.body.password, req.body.phone );
+  handle_static_file( 'public/user_created.html', res );
+});
+
+// Handle: Sign-in request
+app.post('/signin', function(req, res){
+  console.log( "Handling request to /signin" );
+  user_exists( req.body.email, req.body.password );
+});
+
+// Handle: static file requests
+app.get('*', function(req, res){
+  var file_path = get_requested_file_path( req );
+  console.log( "Handling request to static file: " + file_path );
   path.exists(file_path, function(exists) {
-
-    if ( exists && file_path !== 'public/index.html' ) {
-      handle_static_file( file_path, response );
-    } 
-
-    else if ( file_path === 'public/signup' ) {
-      var queryObject = url.parse(request.url,true).query;
-      add_user( queryObject.email, queryObject.password, queryObject.phone );
-      handle_static_file( 'public/user_created.html', response );
-    }
-
-    else if ( file_path === 'public/index.html' ) {
-      get_messages( 'foo@bar.com' );
-    }
-
-    else {
-      console.log('Did not find ' + file_path);
-      response.writeHead(404);
-      response.end();
+    if ( exists ) {
+      handle_static_file( file_path, res );
+    } else {
+      console.log('Request handled as 404: ' + file_path);
+      res.writeHead(404);
+      res.end();
     }
   });
+});
 
-}).listen(8888);
+app.listen(8888);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-function get_messages( email ) {
+function get_messages( email, response ) {
 
   get_db().on('error', function(error) {
     console.log('Database error: ' + error);
@@ -188,10 +196,6 @@ function get_db() {
     password: 'yourmom',
     database: 'procrastinate',
   });
-}
-
-function _index_html() {
-  return '';
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
