@@ -16,11 +16,7 @@ var options = {
 	host: tBaseUrl,
 	port: '443',
 	path: sendUrl,
-	method: 'POST',
-	headers: {
-		'Content-Type': 'application/x-www-form-urlencoded',
-		'Content-Length': post_data.length
-	}
+	method: 'POST'
 }
 
 console.log(options)
