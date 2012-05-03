@@ -19,3 +19,9 @@ Besides implementing the basic functionality, this is a wish list of development
 [ ] Clean up basic server logic to be more idiomatically Express-like. See: http://expressjs.com/guide.html
 
 [ ] Use less generic error pages for failed authentication
+
+[ ] Pick a name ("Procrastinator"? "Procrastinate"? "Remind.Me"? ) and use consistently in site
+
+[ ] Move all files to Jade, and use a single layout file to DRY
+
+

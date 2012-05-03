@@ -13,6 +13,9 @@ var app = express.createServer();
 app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.session({ secret: "procrastifoo" }));
+//app.set('views', __dirname + '/templates');
+app.set('views', __dirname + '/../templates');
+app.set('view engine', 'jade');
 
 // Handle: domain root request
 app.get('/', function(req, res){
@@ -67,7 +70,12 @@ function get_messages( email, response ) {
 
             console.log( "Found " + rows.length + " messages for user `" + email + "`." );
 
-            handle_static_file( 'public/index.html', response );
+            //handle_static_file( 'public/index.html', response );
+
+            response.render('index', {
+              title: 'Home'
+            });
+            
         });
   }).connect();
 
