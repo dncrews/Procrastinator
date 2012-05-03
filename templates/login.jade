@@ -1,0 +1,31 @@
+.signup.twoCol
+  h1 Sign Up
+  form#signup( id="signup", action="/process/signup", method="post")
+
+    label Email
+    input(type="text", name="email", placeholder="john.doe@reminder.com")
+
+    label Password
+    input(type="password", name="password")
+
+    label Confirm Password
+    input(type="password", name="password2")
+
+    label Phone Number
+    input(type="text", name="phone", placeholder="111-222-3333")
+
+    input(type="submit", value="Sign Me Up", class="btn")
+
+.signup.twoCol
+  h1  Sign In
+  form#signup(id="signin", action="/process/login", method="post")
+
+    label Email
+    input(type="text", name="email", placeholder="john.doe@reminder.com")
+
+    label Password
+    input(type="text", name="password", placeholder="john.doe@reminder.com")
+
+    input(type="submit", value="Sign In", class="btn")
+
+.clearFloat

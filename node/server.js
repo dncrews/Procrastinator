@@ -13,7 +13,6 @@ var app = express.createServer();
 app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.session({ secret: "procrastifoo" }));
-//app.set('views', __dirname + '/templates');
 app.set('views', __dirname + '/../templates');
 app.set('view engine', 'jade');
 
@@ -23,15 +22,22 @@ app.get('/', function(req, res){
   handle_root_req( req, res );
 });
 
+app.get('/login', function(req, res){
+  console.log( "Handling request to log in page" );
+  res.render('login', {
+    title: 'Log in or Sign up'
+  });
+});
+
 // Handle: Sign-up request
-app.post('/signup', function(req, res){
-  console.log( "Handling request to /signup" );
+app.post('/process/signup', function(req, res){
+  console.log( "Handling sign up" );
   add_user( req, res, req.body.email, req.body.password, req.body.phone );
 });
 
 // Handle: Sign-in request
-app.post('/signin', function(req, res){
-  console.log( "Handling request to /signin" );
+app.post('/process/login', function(req, res){
+  console.log( "Handling log in" );
   handle_signin( req, res, req.body.email, req.body.password );
 });
 
@@ -132,7 +138,7 @@ function handle_root_req( req, res ) {
 
   if ( typeof auth_email === 'undefined' || typeof auth_pass === 'undefined' ) {
     console.log( "No session information for user; redirecting to login page" );
-    res.redirect('/login.html');
+    res.redirect('/login');
     return;
   }
 
@@ -154,7 +160,7 @@ function handle_root_req( req, res ) {
           if ( rows.length > 0 ) {
             get_messages( req.session.email, res );
           } else {
-            res.redirect('/login.html');
+            res.redirect('/login');
           }
                 
         });
