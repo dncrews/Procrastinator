@@ -5,10 +5,10 @@ var twilioClient = require('twilio').Client,
 	app = express.createServer()
 
 phone.setup(function(){
-	phone.on('incomingSms', function(reqParams, res) {
-		console.log(reqParams)
-		console.log(res)
-	})
+	// phone.on('incomingSms', function(reqParams, res) {
+	// 	console.log(reqParams)
+	// 	console.log(res)
+	// })
 })
 
 app.get('/', function(req,res) {
