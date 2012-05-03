@@ -8,7 +8,7 @@ var querystring = require('querystring'),
 
 var post_data = querystring.stringify({
 	'From' : number,
-	'To' : '+8012435260',
+	'To' : '+18012435260',
 	'Body': 'Super Duper Test'
 });
 
@@ -16,7 +16,11 @@ var options = {
 	host: tBaseUrl,
 	port: '443',
 	path: sendUrl,
-	method: 'POST'
+	method: 'POST',
+	headers: {
+		'Content-Type': 'application/x-www-form-urlencoded',
+		'Content-Length': post_data.length
+	}
 }
 
 console.log(options)
