@@ -1,13 +1,5 @@
 Besides implementing the basic functionality, this is a wish list of development items:
 
-[x] Change any GET submissions from forms to POST (e.g., when creating user account)
-
-[x] Clean up routes, perhaps using Express (Sinatra-like routing)
-
-[x] When hit /, check if authenticated. If not, go to login page; else, show home page
-
-[ ] Use templating, perhaps Underscore.js, to render dynamic page content (e.g., list of events)
-
 [ ] Make database user & database name configurable. Right now, hardcoded in scripts/init.sql (with a slightly offensive password)
 
 [ ] Error handling (e.g., if login fails; if database connection fails; I/O errors; etc.)
@@ -24,4 +16,15 @@ Besides implementing the basic functionality, this is a wish list of development
 
 [ ] Move all files to Jade, and use a single layout file to DRY
 
+
+Feel good, these things are finished:
+
+[x] Change any GET submissions from forms to POST (e.g., when creating user account)
+
+[x] Clean up routes, perhaps using Express (Sinatra-like routing)
+
+[x] When hit /, check if authenticated. If not, go to login page; else, show home page
+
+[x] Use templating, perhaps Underscore.js, to render dynamic page content (e.g., list of events)
+    (Nope, using Jade)
 
