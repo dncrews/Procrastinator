@@ -15,5 +15,5 @@ app.get('/', function(req,res) {
 	res.send('test')
 })
 
-app.listen(8080)
+app.listen(80)
 
