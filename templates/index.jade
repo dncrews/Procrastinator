@@ -1,1 +1,14 @@
 h1= title
+
+.addNew
+  a.btn Add New Event
+
+.currentEvents
+  .event
+    h2 ##title##
+    p.event_descr ##descr##
+    p.event_date  ##mm/dd/yyyy##
+    p.event_time  ##12:00 pm##
+    a.event_edit(href="#edit) Edit Event
+    a.event_delete(href="#delete")  Delete Event
+
