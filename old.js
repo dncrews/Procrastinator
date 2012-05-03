@@ -29,7 +29,6 @@ req = http.request(options, function(res) {
 	})
 })
 
-// req.write("From=" + number + "&To=+14159352345&Body=Jenny%20please%3F%21%20I%20love%20you%20%3C3")
 req.write(post_data)
 req.end()
 
